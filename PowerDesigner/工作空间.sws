@@ -4,7 +4,8 @@
 
 <Workspace>
 	<Local Expanded="Yes">
-		<Model Expanded="Yes" ID="{A4B313A2-5555-479D-B463-ED4C62139286}" Name="ObjectOrientedModel_1" Selected="Yes" Type="{18112060-1A4B-11D1-83D9-444553540000}" URL="UserCase.oom"/>
+		<Model Expanded="Yes" ID="{A4B313A2-5555-479D-B463-ED4C62139286}" Name="ObjectOrientedModel_1" Type="{18112060-1A4B-11D1-83D9-444553540000}" URL="UserCase.oom"/>
+		<Model Expanded="Yes" ID="{13453BBA-D358-4520-9603-6D8FC20859D0}" Name="ihrm-db" Selected="Yes" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="ihrm-db.pdm"/>
 	</Local>
 	<BrowserModule Name="仓库(&amp;R)"/>
 </Workspace>

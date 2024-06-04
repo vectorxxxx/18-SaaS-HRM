@@ -6,3 +6,5 @@ export const update = (data) => createAPI(`/sys/user/${data.id}`, "put", data);
 export const remove = (data) =>
   createAPI(`/sys/user/${data.id}`, "delete", data);
 export const detail = (data) => createAPI(`/sys/user/${data.id}`, "get", data);
+export const assignRoles = (data) =>
+  createAPI(`/sys/user/assignRoles`, "put", data);

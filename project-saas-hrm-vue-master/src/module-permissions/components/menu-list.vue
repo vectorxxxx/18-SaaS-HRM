@@ -19,35 +19,35 @@
 </template>
 
 <script>
-import {list} from "@/api/base/permissions"
-import commonApi from "@/utils/common"
+import {list} from '@/api/base/permissions'
+import commonApi from '@/utils/common'
 export default {
     data () {
         return {
-            dataList:[],
-            pointEnable:{}
+            dataList: [],
+            pointEnable: {}
         }
     },
     created () {
-        this.getList();
+        this.getList()
     },
     methods: {
         getList() {
-            list({type:1,pid:0}).then(res=> {
+            list({type: 1, pid: 0}).then(res => {
                 this.dataList = res.data.data
             })
         },
-        show(index,id) {
-            if(!this.pointEnable[id] == null || this.pointEnable[id]==undefined){
-                list({type:2,pid:id}).then(res=> {
-                    for(var i = 0 ; i <res.data.data.length;i++) {
-                        this.dataList.splice(index+1,0,res.data.data[i]);
+        show(index, id) {
+            if (!this.pointEnable[id] == null || this.pointEnable[id] == undefined) {
+                list({type: 2, pid: id}).then(res => {
+                    for (var i = 0; i < res.data.data.length; i++) {
+                        this.dataList.splice(index + 1, 0, res.data.data[i])
                     }
-                    this.pointEnable[id] = res.data.data.length;
+                    this.pointEnable[id] = res.data.data.length
                 })
-            }else{
-                this.dataList.splice(index+1,this.pointEnable[id])
-                this.pointEnable[id] = null;
+            } else {
+                this.dataList.splice(index + 1, this.pointEnable[id])
+                this.pointEnable[id] = null
             }
         }
     }

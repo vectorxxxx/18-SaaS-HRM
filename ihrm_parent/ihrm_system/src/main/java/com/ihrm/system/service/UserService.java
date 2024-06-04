@@ -55,7 +55,9 @@ public class UserService extends BaseService<User>
      */
     public void update(User user) {
         //1.根据id查询部门
-        User target = userDao.getOne(user.getId());
+        User target = userDao
+                .findById(user.getId())
+                .get();
         //2.设置部门属性
         BeanUtils.copyProperties(user, target);
         //3.更新部门
@@ -66,7 +68,9 @@ public class UserService extends BaseService<User>
      * 3.根据id查询用户
      */
     public User findById(String id) {
-        return userDao.getOne(id);
+        return userDao
+                .findById(id)
+                .get();
     }
 
     /**

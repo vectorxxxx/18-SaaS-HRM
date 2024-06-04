@@ -8,6 +8,7 @@ import com.ihrm.common.exception.CommonException;
 import com.ihrm.common.utils.JwtUtils;
 import com.ihrm.domain.system.User;
 import com.ihrm.domain.system.response.ProfileResult;
+import com.ihrm.domain.system.response.UserResult;
 import com.ihrm.system.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,8 +155,9 @@ public class UserController extends BaseController
     public Result findById(
             @PathVariable(value = "id")
                     String id) {
-        User user = userService.findById(id);
-        return new Result(ResultCode.SUCCESS, user);
+        final User user = userService.findById(id);
+        final UserResult userResult = new UserResult(user);
+        return new Result(ResultCode.SUCCESS, userResult);
     }
 
     /**

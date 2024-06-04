@@ -15,34 +15,35 @@
   </div>
 </template>
 <script>
-import {findAll} from "@/api/base/role"
-import {assignRoles,detail} from "@/api/base/users"
+import {findAll} from '@/api/base/role'
+import {assignRoles, detail} from '@/api/base/users'
 export default {
     data () {
         return {
-            roleFormVisible:false,
-            formBase:{},
-            checkedRoles:[],
-            data:[],
-            roles:[],
-            id:null
+            roleFormVisible: false,
+            formBase: {},
+            checkedRoles: [],
+            data: [],
+            roles: [],
+            id: null
         }
     },
     methods: {
         toAssignPrem(id) {
-            detail({id:id}).then(res1 => {
-                this.checkedRoles = res1.data.data.roleIds;
+            detail({id: id}).then(res1 => {
+              console.log(res1.data.data)
+                this.checkedRoles = res1.data.data.roleIds
                 findAll().then(res => {
-                    this.id = id;
+                    this.id = id
                     this.roles = res.data.data
-                    this.roleFormVisible=true
+                    this.roleFormVisible = true
                 })
             })
         },
         createData() {
-            assignRoles({id:this.id,roleIds:this.checkedRoles}).then(res => {
-                this.$message({message:res.data.message,type:res.data.success?"success":"error"});
-                this.roleFormVisible=false
+            assignRoles({id: this.id, roleIds: this.checkedRoles}).then(res => {
+                this.$message({message: res.data.message, type: res.data.success ? 'success' : 'error'})
+                this.roleFormVisible = false
             })
         }
     }

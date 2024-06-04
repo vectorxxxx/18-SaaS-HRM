@@ -35,7 +35,7 @@ public class RoleController extends BaseController
         //2.获取到权限的id列表
         List<String> permIds = (List<String>) map.get("permIds");
         //3.调用service完成权限分配
-        // roleService.assignPerms(roleId, permIds);
+        roleService.assignPerms(roleId, permIds);
         return new Result(ResultCode.SUCCESS);
     }
 

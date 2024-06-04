@@ -66,7 +66,7 @@
         <!-- 新增员工弹层 -->
         <component v-bind:is="employeesAdd" ref="addUser" @doQuery="doQuery"></component>
         <!--分配角色组件 -->
-
+        <component v-bind:is="addRole" ref="addRole"></component>
       </el-card>
     </div>
   </div>

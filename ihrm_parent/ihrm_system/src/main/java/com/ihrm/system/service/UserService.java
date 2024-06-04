@@ -2,7 +2,9 @@ package com.ihrm.system.service;
 
 import com.ihrm.common.service.BaseService;
 import com.ihrm.common.utils.IdWorker;
+import com.ihrm.domain.system.Role;
 import com.ihrm.domain.system.User;
+import com.ihrm.system.dao.RoleDao;
 import com.ihrm.system.dao.UserDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService extends BaseService<User>
@@ -31,15 +30,12 @@ public class UserService extends BaseService<User>
     @Autowired
     private IdWorker idWorker;
 
-    // public User findByMobileAndPassword(String mobile, String password) {
-    //     User user = userDao.findByMobile(mobile);
-    //     if (user != null && password.equals(user.getPassword())) {
-    //         return user;
-    //     }
-    //     else {
-    //         return null;
-    //     }
-    // }
+    /**
+     * 根据mobile查询用户
+     */
+    public User findByMobile(String mobile) {
+        return userDao.findByMobile(mobile);
+    }
 
     /**
      * 1.保存用户
@@ -139,24 +135,27 @@ public class UserService extends BaseService<User>
         }
     }
 
+    @Autowired
+    private RoleDao roleDao;
+
     /**
      * 分配角色
      */
-    // public void assignRoles(String userId, List<String> roleIds) {
-    //     User user = userDao
-    //             .findById(userId)
-    //             .get();
-    //     Set<Role> roles = new HashSet<>();
-    //     for (String id : roleIds) {
-    //         Role role = roleDao
-    //                 .findById(id)
-    //                 .get();
-    //         roles.add(role);
-    //     }
-    //     //设置用户和角色之间的关系
-    //     user.setRoles(roles);
-    //     userDao.save(user);
-    // }
+    public void assignRoles(String userId, List<String> roleIds) {
+        User user = userDao
+                .findById(userId)
+                .get();
+        Set<Role> roles = new HashSet<>();
+        for (String id : roleIds) {
+            Role role = roleDao
+                    .findById(id)
+                    .get();
+            roles.add(role);
+        }
+        //设置用户和角色之间的关系
+        user.setRoles(roles);
+        userDao.save(user);
+    }
 
     /**
      * 动态条件构建

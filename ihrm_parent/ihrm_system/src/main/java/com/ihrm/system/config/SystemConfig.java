@@ -2,11 +2,10 @@ package com.ihrm.system.config;
 
 import com.ihrm.common.interceptor.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
-@Configuration
+// @Configuration
 public class SystemConfig extends WebMvcConfigurationSupport
 {
 
@@ -24,6 +23,6 @@ public class SystemConfig extends WebMvcConfigurationSupport
                 //2.指定拦截器的url地址
                 .addPathPatterns("/**")
                 //3.指定不拦截的url地址
-                .excludePathPatterns("/sys/login", "/sys/profile", "/frame/register/**");
+                .excludePathPatterns("/sys/login", "/frame/register/**");
     }
 }

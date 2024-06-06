@@ -19,6 +19,7 @@ import java.util.List;
  * @description
  * @date 2024-05-31 13:51:27
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/company")
 public class DepartmentController extends BaseController
@@ -36,7 +37,7 @@ public class DepartmentController extends BaseController
     public Result add(
             @RequestBody
                     Department department) throws Exception {
-        department.setCompanyId(parseCompanyId());
+        department.setCompanyId(companyId);
         departmentService.save(department);
         return Result.SUCCESS();
     }
@@ -51,7 +52,7 @@ public class DepartmentController extends BaseController
                     String id,
             @RequestBody
                     Department department) throws Exception {
-        department.setCompanyId(parseCompanyId());
+        department.setCompanyId(companyId);
         department.setId(id);
         departmentService.update(department);
         return Result.SUCCESS();
@@ -87,8 +88,8 @@ public class DepartmentController extends BaseController
     @RequestMapping(value = "/departments",
                     method = RequestMethod.GET)
     public Result findAll() throws Exception {
-        Company company = companyService.findById(parseCompanyId());
-        List<Department> list = departmentService.findAll(parseCompanyId());
+        Company company = companyService.findById(companyId);
+        List<Department> list = departmentService.findAll(companyId);
         return new Result(ResultCode.SUCCESS, new DeptListResult(company, list));
     }
 }

@@ -75,8 +75,8 @@ export default {
     }
     return {
       loginForm: {
-        username: '13800138003',
-        password: '1234561'
+        username: '13800000002',
+        password: '123456'
       },
       loginRules: {
         username: [
@@ -152,6 +152,7 @@ $light_gray: #68b0fe;
     display: inline-block;
     height: 47px;
     width: 85%;
+
     input {
       background: transparent;
       border: 0px;
@@ -160,12 +161,14 @@ $light_gray: #68b0fe;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
       height: 47px;
+
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: #fff !important;
       }
     }
   }
+
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.7);
@@ -185,6 +188,7 @@ $light_gray: #eee;
   height: 100%;
   width: 100%;
   background: url(./../assets/login.jpg) 50% 50% no-repeat;
+
   .login-form {
     position: absolute;
     top: 50%;
@@ -195,28 +199,34 @@ $light_gray: #eee;
     padding: 35px 35px 15px 35px;
     margin: -260px auto 0;
   }
+
   .tips {
     font-size: 14px;
     color: #fff;
     margin-bottom: 10px;
+
     span {
       &:first-of-type {
         margin-right: 16px;
       }
     }
   }
+
   .svg-container {
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
+
     &_login {
       font-size: 20px;
     }
   }
+
   .title-container {
     position: relative;
+
     .title {
       font-size: 26px;
       font-weight: 400;
@@ -225,6 +235,7 @@ $light_gray: #eee;
       text-align: center;
       font-weight: bold;
     }
+
     .set-language {
       color: #fff;
       position: absolute;
@@ -232,6 +243,7 @@ $light_gray: #eee;
       right: 0px;
     }
   }
+
   .show-pwd {
     position: absolute;
     right: 10px;
@@ -241,21 +253,25 @@ $light_gray: #eee;
     cursor: pointer;
     user-select: none;
   }
+
   .thirdparty-button {
     position: absolute;
     right: 35px;
     bottom: 28px;
   }
 }
+
 .loginBtn {
   background: #407ffe;
   height: 64px;
   line-height: 32px;
   font-size: 24px;
 }
+
 .el-form-item {
   margin-bottom: 20px;
 }
+
 .regInfo {
   text-align: center;
   color: #fff;

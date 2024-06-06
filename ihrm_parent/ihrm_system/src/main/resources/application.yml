@@ -25,4 +25,4 @@ spring:
 jwt:
   config:
     key: saas-ihrm
-    ttl: 36000
+    ttl: 3600000

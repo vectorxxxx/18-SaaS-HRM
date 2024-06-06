@@ -39,12 +39,12 @@ public class BaseController
         }
     }
 
-    //企业id，（暂时使用1,以后会动态获取）
-    public String parseCompanyId() {
-        return "1";
-    }
-
-    public String parseCompanyName() {
-        return "江苏传智播客教育股份有限公司";
-    }
+    // //企业id，（暂时使用1,以后会动态获取）
+    // public String parseCompanyId() {
+    //     return "1";
+    // }
+    //
+    // public String parseCompanyName() {
+    //     return "江苏传智播客教育股份有限公司";
+    // }
 }

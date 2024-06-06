@@ -14,6 +14,7 @@ import java.util.*;
 @Getter
 public class ProfileResult implements Serializable, AuthCachePrincipal
 {
+    private String userId;
     private String mobile;
     private String username;
     private String company;
@@ -24,6 +25,7 @@ public class ProfileResult implements Serializable, AuthCachePrincipal
      * @param user
      */
     public ProfileResult(User user, List<Permission> list) {
+        this.userId = user.getId();
         this.mobile = user.getMobile();
         this.username = user.getUsername();
         this.company = user.getCompanyName();
@@ -51,6 +53,7 @@ public class ProfileResult implements Serializable, AuthCachePrincipal
     }
 
     public ProfileResult(User user) {
+        this.userId = user.getId();
         this.mobile = user.getMobile();
         this.username = user.getUsername();
         this.company = user.getCompanyName();

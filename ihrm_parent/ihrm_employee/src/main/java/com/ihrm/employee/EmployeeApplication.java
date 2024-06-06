@@ -1,4 +1,4 @@
-package com.ihrm.company;
+package com.ihrm.employee;
 
 import com.ihrm.common.utils.IdWorker;
 import com.ihrm.common.utils.JwtUtils;
@@ -8,28 +8,23 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
-//1.配置springboot的包扫描
-@SpringBootApplication(scanBasePackages = "com.ihrm")
-//2.配置jpa注解的扫描
-@EntityScan(value = "com.ihrm.domain.company")
 @EnableEurekaClient
-public class CompanyApplication
+@SpringBootApplication(scanBasePackages = "com.ihrm")
+@EntityScan("com.ihrm.domain.employee")
+public class EmployeeApplication
 {
 
-    /**
-     * 启动方法
-     */
     public static void main(String[] args) {
-        SpringApplication.run(CompanyApplication.class, args);
+        SpringApplication.run(EmployeeApplication.class, args);
     }
 
     @Bean
-    public JwtUtils jwtUtils() {
+    public IdWorker idWorkker() {
+        return new IdWorker(1, 1);
+    }
+
+    @Bean
+    public JwtUtils jwtUtil() {
         return new JwtUtils();
-    }
-
-    @Bean
-    public IdWorker idWorker() {
-        return new IdWorker();
     }
 }

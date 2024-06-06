@@ -2,10 +2,13 @@ package com.ihrm.system.service;
 
 import com.ihrm.common.service.BaseService;
 import com.ihrm.common.utils.IdWorker;
+import com.ihrm.domain.company.Department;
 import com.ihrm.domain.system.Role;
 import com.ihrm.domain.system.User;
+import com.ihrm.system.client.DepartmentFeignClient;
 import com.ihrm.system.dao.RoleDao;
 import com.ihrm.system.dao.UserDao;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -213,5 +216,31 @@ public class UserService extends BaseService<User>
                 return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
             }
         };
+    }
+
+    @Autowired
+    private DepartmentFeignClient departmentFeignClient;
+
+    public void saveAll(List<User> users, String companyId, String companyName) {
+        users.forEach(user -> {
+            //默认密码
+            user.setPassword(new Md5Hash("123456", user.getMobile(), 3).toString());
+            //id
+            user.setId(idWorker.nextId() + "");
+            //基本属性
+            user.setCompanyId(companyId);
+            user.setCompanyName(companyName);
+            user.setInServiceStatus(1);
+            user.setEnableState(1);
+            user.setLevel("user");
+
+            //填充部门的属性
+            Department department = departmentFeignClient.findByCode(user.getDepartmentId(), companyId);
+            if (department != null) {
+                user.setDepartmentId(department.getId());
+                user.setDepartmentName(department.getName());
+            }
+        });
+        userDao.saveAll(users);
     }
 }

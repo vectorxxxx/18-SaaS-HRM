@@ -21,6 +21,7 @@ public class BaseController
     protected HttpServletResponse response;
     protected String companyId;
     protected String companyName;
+    protected String userId;
 
     @ModelAttribute
     public void setReqAndResp(HttpServletRequest request, HttpServletResponse response) {
@@ -36,6 +37,7 @@ public class BaseController
             final ProfileResult profileResult = (ProfileResult) principals.getPrimaryPrincipal();
             this.companyId = profileResult.getCompanyId();
             this.companyName = profileResult.getCompany();
+            this.userId = profileResult.getUserId();
         }
     }
 

@@ -6,31 +6,22 @@ eureka:
   instance:
     prefer-ip-address: true
 
-#服务配置
 server:
-  port: 9002
-#spring配置
+  port: 9003
 spring:
-  #1.应用配置
   application:
-    name: ihrm-system #指定服务名
-  #2.数据库连接池
+    name: ihrm-employee #指定服务名
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ihrm?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: root
-  #3.JPA
   jpa:
     database: MySQL
     show-sql: true
     open-in-view: true
-  #4.Redis
   redis:
     host: 127.0.0.1
     port: 6379
     password: 123456
-jwt:
-  config:
-    key: saas-ihrm
-    ttl: 3600000
+

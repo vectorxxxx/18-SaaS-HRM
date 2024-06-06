@@ -166,7 +166,25 @@ public class PermissionService
     }
 
     /**
-     * 4.查询全部 type      : 查询全部权限列表type：0：菜单 + 按钮（权限点） 1：菜单2：按钮（权限点）3：API接口 enVisible : 0：查询所有saas平台的最高权限，1：查询企业的权限 pid ：父id
+     * 4.查询全部
+     * <p>
+     * 查询全部权限列表type：
+     * <p>
+     * 0：菜单 + 按钮（权限点）
+     * <p>
+     * 1：菜单
+     * <p>
+     * 2：按钮（权限点）
+     * <p>
+     * 3：API接口
+     * <p>
+     * enVisible :
+     * <p>
+     * 0：查询所有saas平台的最高权限，
+     * <p>
+     * 1：查询企业的权限
+     * <p>
+     * pid ：父id
      */
     public List<Permission> findAll(Map<String, Object> map) {
         //1.需要查询条件

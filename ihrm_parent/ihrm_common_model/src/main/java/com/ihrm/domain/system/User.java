@@ -94,6 +94,15 @@ public class User implements Serializable
     private String departmentName;
 
     /**
+     * saasAdmin：saas管理员具备所有权限
+     * <p>
+     * coAdmin：企业管理（创建租户企业的时候添加）
+     * <p>
+     * user：普通用户（需要分配角色）
+     */
+    private String level;
+
+    /**
      * JsonIgnore : 忽略json转化
      */
     @JsonIgnore

@@ -25,7 +25,7 @@
             <el-button type="primary" size="mini" title="设置">设置</el-button>
             <router-link :to="{'path':'/employees/archiving/'}" class="el-button el-button--primary el-button--mini" title="历史归档">历史归档</router-link>
             <router-link :to="{'path':'/employees/report/1'}" class="el-button el-button--primary el-button--mini" >1月份报表</router-link>
-            <el-button  type="primary" size="mini" icon="el-icon-plus" @click="handlAdd">新增员工</el-button>
+            <el-button  type="primary" v-if="checkPoint('POINT-USER-ADD')" size="mini" icon="el-icon-plus" @click="handlAdd">新增员工</el-button>
         </div>
       </el-card>
       <el-card shadow="never" class="boxMar">
@@ -78,6 +78,7 @@ import {list, remove} from '@/api/base/users'
 import PageTool from './../../components/page/page-tool'
 import employeesAdd from './../components/add'
 import addRole from './../components/addRole'
+import {hasPermissionPoint} from '@/utils/permission'
 export default {
   name: 'employeesList',
   components: {
@@ -97,6 +98,9 @@ export default {
     }
   },
   methods: {
+    checkPoint(point) {
+      return hasPermissionPoint(point)
+    },
     // 业务方法
     doQuery(params) {
         list(this.requestParameters)

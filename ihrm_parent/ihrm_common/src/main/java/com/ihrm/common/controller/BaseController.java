@@ -1,5 +1,9 @@
 package com.ihrm.common.controller;
 
+import com.ihrm.domain.system.response.ProfileResult;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +26,17 @@ public class BaseController
     public void setReqAndResp(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
-        /**
-         * 目前使用 companyId = 1
-         *         companyName = "传智播客"
-         */
-        this.companyId = "1";
-        this.companyName = "传智播客";
+
+        // this.companyId = "1";
+        // this.companyName = "传智播客";
+        // 使用 shiro 从 Redis 获取数据
+        final Subject subject = SecurityUtils.getSubject();
+        final PrincipalCollection principals = subject.getPrincipals();
+        if (principals != null && !principals.isEmpty()) {
+            final ProfileResult profileResult = (ProfileResult) principals.getPrimaryPrincipal();
+            this.companyId = profileResult.getCompanyId();
+            this.companyName = profileResult.getCompany();
+        }
     }
 
     //企业id，（暂时使用1,以后会动态获取）

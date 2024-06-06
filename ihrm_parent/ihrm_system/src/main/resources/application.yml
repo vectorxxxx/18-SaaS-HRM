@@ -9,7 +9,7 @@ spring:
   #2.数据库连接池
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ihrm?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/ihrm?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: root
   #3.JPA
@@ -17,6 +17,11 @@ spring:
     database: MySQL
     show-sql: true
     open-in-view: true
+  #4.Redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
 jwt:
   config:
     key: saas-ihrm

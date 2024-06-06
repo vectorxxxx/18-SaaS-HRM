@@ -7,6 +7,7 @@ import cn.itcast.shiro.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,9 @@ public class CustomRealm extends AuthorizingRealm
             return new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Md5Hash("123456", "13800000002", 3));
     }
 }

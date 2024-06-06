@@ -24,6 +24,6 @@ public class SystemConfig extends WebMvcConfigurationSupport
                 //2.指定拦截器的url地址
                 .addPathPatterns("/**")
                 //3.指定不拦截的url地址
-                .excludePathPatterns("/sys/login", "/frame/register/**");
+                .excludePathPatterns("/sys/login", "/sys/profile", "/frame/register/**");
     }
 }

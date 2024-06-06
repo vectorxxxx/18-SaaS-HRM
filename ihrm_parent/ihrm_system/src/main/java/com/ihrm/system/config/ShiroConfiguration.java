@@ -3,6 +3,7 @@ package com.ihrm.system.config;
 import com.google.common.collect.Maps;
 import com.ihrm.common.shiro.realm.IhrmRealm;
 import com.ihrm.common.shiro.session.IhrmSessionManager;
+import com.ihrm.system.shiro.realm.UserRealm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -27,7 +28,7 @@ public class ShiroConfiguration
      */
     @Bean
     public IhrmRealm getRealm() {
-        return new IhrmRealm();
+        return new UserRealm();
     }
 
     /**
@@ -64,7 +65,7 @@ public class ShiroConfiguration
         // anon, authc, authcBasic, user 是第一组认证过滤器，perms, port, rest, roles, ssl 是第二组授权过滤器
         // 要通过授权过滤器，就先要完成登陆认证操作（即先要完成认证才能前去寻找授权) 才能走第二组授权器（例如访问需要 roles 权限的 url，如果还没有登陆的话，会直接跳转到shiroFilterFactoryBean.setLoginUrl(); 设置的 url ）
         final Map<String, String> filterMap = Maps.newHashMap();
-        filterMap.put("/frame/login", "anon");              // 匿名访问
+        filterMap.put("/sys/login", "anon");                // 匿名访问
         filterMap.put("/autherror", "anon");                // 匿名访问
         filterMap.put("/**", "authc");                      // 认证访问
 

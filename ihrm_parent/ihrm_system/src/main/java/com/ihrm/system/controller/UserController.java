@@ -4,13 +4,13 @@ import com.ihrm.common.controller.BaseController;
 import com.ihrm.common.entity.PageResult;
 import com.ihrm.common.entity.Result;
 import com.ihrm.common.entity.ResultCode;
+import com.ihrm.common.poi.ExcelImportUtil;
 import com.ihrm.domain.company.Department;
 import com.ihrm.domain.system.User;
 import com.ihrm.domain.system.response.ProfileResult;
 import com.ihrm.domain.system.response.UserResult;
 import com.ihrm.system.client.DepartmentFeignClient;
 import com.ihrm.system.service.UserService;
-import org.apache.poi.ss.usermodel.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,46 +46,65 @@ public class UserController extends BaseController
     @Autowired
     private DepartmentFeignClient departmentFeignClient;
 
+    @RequestMapping("/user/upload/{id}")
+    public Result upload(
+            @PathVariable(name = "id")
+                    String id,
+            @RequestParam("file")
+                    MultipartFile file) throws Exception {
+        String imageUrl = userService.uploadImage(id, file);
+        return new Result(ResultCode.SUCCESS, imageUrl);
+    }
+
     @RequestMapping(value = "/user/import")
     public Result importUser(
             @RequestParam(name = "file")
                     MultipartFile file) throws Exception {
-        final Workbook wb = WorkbookFactory.create(file.getInputStream());
-        final Sheet sheet = wb.getSheetAt(0);
-        List<User> users = new ArrayList<>();
-        for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
-            final Row row = sheet.getRow(rowNum);
-            Object[] objects = new Object[sheet.getLastRowNum()];
-            for (int cellNum = 1; cellNum < row.getLastCellNum(); cellNum++) {
-                final Cell cell = row.getCell(cellNum);
-                objects[cellNum] = getCellValue(cell);
-            }
-            users.add(new User(objects));
-        }
+        final List<User> users = new ExcelImportUtil<>(User.class).readExcel(file.getInputStream(), 1, 1);
         userService.saveAll(users, companyId, companyName);
-
         return new Result(ResultCode.SUCCESS);
     }
-
-    public Object getCellValue(Cell cell) {
-        switch (cell.getCellType()) {
-            case STRING:
-                return cell.getStringCellValue();
-            case BOOLEAN:
-                return cell.getNumericCellValue();
-            case NUMERIC:
-                if (DateUtil.isCellDateFormatted(cell)) {
-                    return cell.getDateCellValue();
-                }
-                else {
-                    return cell.getNumericCellValue();
-                }
-            case FORMULA:
-                return cell.getCellFormula();
-            default:
-                return null;
-        }
-    }
+    // @RequestMapping(value = "/user/import")
+    // public Result importUser(
+    //         @RequestParam(name = "file")
+    //                 MultipartFile file) throws Exception {
+    //     final Workbook wb = WorkbookFactory.create(file.getInputStream());
+    //     final Sheet sheet = wb.getSheetAt(0);
+    //     List<User> users = new ArrayList<>();
+    //     for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+    //         final Row row = sheet.getRow(rowNum);
+    //         Object[] objects = new Object[sheet.getLastRowNum()];
+    //         for (int cellNum = 1; cellNum < row.getLastCellNum(); cellNum++) {
+    //             final Cell cell = row.getCell(cellNum);
+    //             objects[cellNum] = getCellValue(cell);
+    //         }
+    //         users.add(new User(objects));
+    //     }
+    //
+    //     userService.saveAll(users, companyId, companyName);
+    //
+    //     return new Result(ResultCode.SUCCESS);
+    // }
+    //
+    // public Object getCellValue(Cell cell) {
+    //     switch (cell.getCellType()) {
+    //         case STRING:
+    //             return cell.getStringCellValue();
+    //         case BOOLEAN:
+    //             return cell.getBooleanCellValue();
+    //         case NUMERIC:
+    //             if (DateUtil.isCellDateFormatted(cell)) {
+    //                 return cell.getDateCellValue();
+    //             }
+    //             else {
+    //                 return cell.getNumericCellValue();
+    //             }
+    //         case FORMULA:
+    //             return cell.getCellFormula();
+    //         default:
+    //             return null;
+    //     }
+    // }
 
     //测试通过系统微服务调用企业微服务方法
     @RequestMapping(value = "/test/{id}")

@@ -14,7 +14,7 @@ public class PoiTest03
 
     public static void main(String[] args) throws Exception {
         StringBuilder sb = new StringBuilder();
-        final XSSFWorkbook wb = new XSSFWorkbook("D:\\workspace-mine\\18-SaaS-HRM\\ihrm_parent\\poi-demo\\src\\main\\resources\\demo.xlsx");
+        final XSSFWorkbook wb = new XSSFWorkbook("D:\\workspace-mine\\18-SaaS-HRM\\ihrm_parent\\poi-demo\\src\\main\\resources\\test03.xlsx");
         final XSSFSheet sheet = wb.getSheetAt(0);
         for (int rowNum = 0; rowNum < sheet.getLastRowNum(); rowNum++) {
             final XSSFRow row = sheet.getRow(rowNum);
@@ -35,7 +35,7 @@ public class PoiTest03
             case STRING:
                 return cell.getStringCellValue();
             case BOOLEAN:
-                return cell.getNumericCellValue();
+                return cell.getBooleanCellValue();
             case NUMERIC:
                 if (DateUtil.isCellDateFormatted(cell)) {
                     return cell.getDateCellValue();

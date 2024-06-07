@@ -2,6 +2,7 @@ package com.ihrm.system.service;
 
 import com.ihrm.common.service.BaseService;
 import com.ihrm.common.utils.IdWorker;
+import com.ihrm.common.utils.QiniuUploadUtil;
 import com.ihrm.domain.company.Department;
 import com.ihrm.domain.system.Role;
 import com.ihrm.domain.system.User;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -242,5 +245,26 @@ public class UserService extends BaseService<User>
             }
         });
         userDao.saveAll(users);
+    }
+
+    /**
+     * 上传图片
+     *
+     * @param id   图片id
+     * @param file 文件
+     * @return {@link String }
+     */
+    public String uploadImage(String id, MultipartFile file) throws Exception {
+        final User user = userDao.getOne(id);
+        final String key = new QiniuUploadUtil().upload(file.getOriginalFilename(), file.getBytes());
+        if (key != null) {
+            user.setStaffPhoto(key);
+        }
+        else {
+            final String str = new String(Base64Utils.encode(file.getBytes()));
+            user.setStaffPhoto("data:image/jpg;base64,".concat(str));
+        }
+        userDao.save(user);
+        return key;
     }
 }

@@ -4,26 +4,22 @@ import com.ihrm.common.controller.BaseController;
 import com.ihrm.common.entity.PageResult;
 import com.ihrm.common.entity.Result;
 import com.ihrm.common.entity.ResultCode;
+import com.ihrm.common.poi.ExcelExportUtil;
 import com.ihrm.common.utils.BeanMapUtils;
-import com.ihrm.common.utils.DownloadUtils;
 import com.ihrm.domain.employee.*;
 import com.ihrm.domain.employee.response.EmployeeReportResult;
 import com.ihrm.employee.service.*;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/employees")
@@ -267,80 +263,178 @@ public class EmployeeController extends BaseController
     public void export(
             @PathVariable(name = "month")
                     String month, HttpServletResponse response) throws Exception {
+        final FileInputStream fis = new FileInputStream(new ClassPathResource("excel-template/hr-demo.xlsx").getFile());
         List<EmployeeReportResult> list = userCompanyPersonalService.findByReport(companyId, month);
-
-        final XSSFWorkbook wb = new XSSFWorkbook();
-        final XSSFSheet sheet = wb.createSheet();
-
-        // 创建表头
-        final XSSFRow headerRow = sheet.createRow(0);
-        AtomicInteger headersAi = new AtomicInteger(0);
-        Arrays
-                .asList("编号,姓名,手机,最高学历,国家地区,护照号,籍贯,生日,属相,入职时间,离职类型,离职原因,离职时间".split(","))
-                .forEach(cellValue -> headerRow
-                        .createCell(headersAi.getAndIncrement())
-                        .setCellValue(cellValue));
-
-        // 创建数据
-        AtomicInteger datasAi = new AtomicInteger(0);
-        list.forEach(employeeReportResult -> {
-            final XSSFRow dataRow = sheet.createRow(datasAi.getAndIncrement());
-            // 编号,
-            dataRow
-                    .createCell(0)
-                    .setCellValue(employeeReportResult.getUserId());
-            // 姓名,
-            dataRow
-                    .createCell(1)
-                    .setCellValue(employeeReportResult.getUsername());
-            // 手机,
-            dataRow
-                    .createCell(2)
-                    .setCellValue(employeeReportResult.getMobile());
-            // 最高学历,
-            dataRow
-                    .createCell(3)
-                    .setCellValue(employeeReportResult.getTheHighestDegreeOfEducation());
-            // 国家地区,
-            dataRow
-                    .createCell(4)
-                    .setCellValue(employeeReportResult.getNationalArea());
-            // 护照号,
-            dataRow
-                    .createCell(5)
-                    .setCellValue(employeeReportResult.getPassportNo());
-            // 籍贯,
-            dataRow
-                    .createCell(6)
-                    .setCellValue(employeeReportResult.getNativePlace());
-            // 生日,
-            dataRow
-                    .createCell(7)
-                    .setCellValue(employeeReportResult.getBirthday());
-            // 属相,
-            dataRow
-                    .createCell(8)
-                    .setCellValue(employeeReportResult.getZodiac());
-            // 入职时间,
-            dataRow
-                    .createCell(9)
-                    .setCellValue(employeeReportResult.getTimeOfEntry());
-            // 离职类型,
-            dataRow
-                    .createCell(10)
-                    .setCellValue(employeeReportResult.getTypeOfTurnover());
-            // 离职原因,
-            dataRow
-                    .createCell(11)
-                    .setCellValue(employeeReportResult.getReasonsForLeaving());
-            // 离职时间
-            dataRow
-                    .createCell(12)
-                    .setCellValue(employeeReportResult.getResignationTime());
-        });
-
-        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        wb.write(stream);
-        new DownloadUtils().download(stream, response, month.concat("月人事报表.xlsx"));
+        new ExcelExportUtil<>(EmployeeReportResult.class, 2, 2).writeExcel(response, fis, list, month.concat("月人事报表.xlsx"));
     }
+
+    // @RequestMapping(value = "/export/{month}",
+    //                 method = RequestMethod.GET)
+    // public void export(
+    //         @PathVariable(name = "month")
+    //                 String month, HttpServletResponse response) throws Exception {
+    //     List<EmployeeReportResult> list = userCompanyPersonalService.findByReport(companyId, month);
+    //
+    //     // 模板文件
+    //     final ClassPathResource resource = new ClassPathResource("excel-template/hr-demo.xlsx");// 相对路径
+    //     final FileInputStream fis = new FileInputStream(resource.getFile());
+    //     final Workbook wb = new XSSFWorkbook(fis);
+    //     final Sheet sheet = wb.getSheetAt(0);
+    //
+    //     // 获取数据行样式
+    //     final Row styleRow = sheet.getRow(2);
+    //     final Map<Integer, CellStyle> styleMap = IntStream
+    //             .range(0, styleRow.getLastCellNum())
+    //             .boxed()
+    //             .collect(Collectors.toMap(Function.identity(), cellNum -> styleRow
+    //                     .getCell(cellNum)
+    //                     .getCellStyle()));
+    //
+    //     // 插入数据
+    //     Cell cell;
+    //     AtomicInteger rowAi = new AtomicInteger(0);
+    //     for (EmployeeReportResult employeeReportResult : list) {
+    //         AtomicInteger cellAi = new AtomicInteger(0);
+    //         final Row dataRow = sheet.createRow(rowAi.getAndIncrement());
+    //
+    //         // 编号,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getUserId());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 姓名,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getUsername());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 手机,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getMobile());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 最高学历,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getTheHighestDegreeOfEducation());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 国家地区,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getNationalArea());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 护照号,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getPassportNo());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 籍贯,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getNativePlace());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 生日,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getBirthday());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 属相,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getZodiac());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 入职时间,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getTimeOfEntry());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 离职类型,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getTypeOfTurnover());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 离职原因,
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getReasonsForLeaving());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //         // 离职时间
+    //         cell = dataRow.createCell(cellAi.get());
+    //         cell.setCellValue(employeeReportResult.getResignationTime());
+    //         cell.setCellStyle(styleMap.get(cellAi.getAndIncrement()));
+    //     }
+    //
+    //     final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    //     wb.write(stream);
+    //     new DownloadUtils().download(stream, response, month.concat("月人事报表.xlsx"));
+    // }
+
+    // @RequestMapping(value = "/export/{month}",
+    //                 method = RequestMethod.GET)
+    // public void export(
+    //         @PathVariable(name = "month")
+    //                 String month, HttpServletResponse response) throws Exception {
+    //     List<EmployeeReportResult> list = userCompanyPersonalService.findByReport(companyId, month);
+    //
+    //     final XSSFWorkbook wb = new XSSFWorkbook();
+    //     final XSSFSheet sheet = wb.createSheet();
+    //
+    //     // 创建表头
+    //     final XSSFRow headerRow = sheet.createRow(0);
+    //     AtomicInteger headersAi = new AtomicInteger(0);
+    //     Arrays
+    //             .asList("编号,姓名,手机,最高学历,国家地区,护照号,籍贯,生日,属相,入职时间,离职类型,离职原因,离职时间".split(","))
+    //             .forEach(cellValue -> headerRow
+    //                     .createCell(headersAi.getAndIncrement())
+    //                     .setCellValue(cellValue));
+    //
+    //     // 创建数据
+    //     AtomicInteger datasAi = new AtomicInteger(0);
+    //     list.forEach(employeeReportResult -> {
+    //         final XSSFRow dataRow = sheet.createRow(datasAi.getAndIncrement());
+    //         // 编号,
+    //         dataRow
+    //                 .createCell(0)
+    //                 .setCellValue(employeeReportResult.getUserId());
+    //         // 姓名,
+    //         dataRow
+    //                 .createCell(1)
+    //                 .setCellValue(employeeReportResult.getUsername());
+    //         // 手机,
+    //         dataRow
+    //                 .createCell(2)
+    //                 .setCellValue(employeeReportResult.getMobile());
+    //         // 最高学历,
+    //         dataRow
+    //                 .createCell(3)
+    //                 .setCellValue(employeeReportResult.getTheHighestDegreeOfEducation());
+    //         // 国家地区,
+    //         dataRow
+    //                 .createCell(4)
+    //                 .setCellValue(employeeReportResult.getNationalArea());
+    //         // 护照号,
+    //         dataRow
+    //                 .createCell(5)
+    //                 .setCellValue(employeeReportResult.getPassportNo());
+    //         // 籍贯,
+    //         dataRow
+    //                 .createCell(6)
+    //                 .setCellValue(employeeReportResult.getNativePlace());
+    //         // 生日,
+    //         dataRow
+    //                 .createCell(7)
+    //                 .setCellValue(employeeReportResult.getBirthday());
+    //         // 属相,
+    //         dataRow
+    //                 .createCell(8)
+    //                 .setCellValue(employeeReportResult.getZodiac());
+    //         // 入职时间,
+    //         dataRow
+    //                 .createCell(9)
+    //                 .setCellValue(employeeReportResult.getTimeOfEntry());
+    //         // 离职类型,
+    //         dataRow
+    //                 .createCell(10)
+    //                 .setCellValue(employeeReportResult.getTypeOfTurnover());
+    //         // 离职原因,
+    //         dataRow
+    //                 .createCell(11)
+    //                 .setCellValue(employeeReportResult.getReasonsForLeaving());
+    //         // 离职时间
+    //         dataRow
+    //                 .createCell(12)
+    //                 .setCellValue(employeeReportResult.getResignationTime());
+    //     });
+    //
+    //     final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    //     wb.write(stream);
+    //     new DownloadUtils().download(stream, response, month.concat("月人事报表.xlsx"));
+    // }
 }

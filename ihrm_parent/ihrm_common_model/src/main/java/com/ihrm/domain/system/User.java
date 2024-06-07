@@ -105,6 +105,11 @@ public class User implements Serializable
      */
     private String level;
 
+    /**
+     * 用户头像
+     */
+    private String staffPhoto;
+
     public User(Object values[]) {
         this.username = values[1].toString();
         this.mobile = new DecimalFormat("#").format(values[2].toString());             // 防止科学计数法

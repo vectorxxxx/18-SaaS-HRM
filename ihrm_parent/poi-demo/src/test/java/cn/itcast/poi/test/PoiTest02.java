@@ -21,7 +21,7 @@ public class PoiTest02
         final Sheet sheet = wb.createSheet("test");
 
         // 获取图片文件输入流
-        final FileInputStream stream = new FileInputStream("D:\\workspace-mine\\18-SaaS-HRM\\ihrm_parent\\poi-demo\\src\\main\\resources\\test.jpg");
+        final FileInputStream stream = new FileInputStream("D:\\workspace-mine\\18-SaaS-HRM\\ihrm_parent\\poi-demo\\src\\main\\resources\\test02.jpg");
         final byte[] bytes = IOUtils.toByteArray(stream);
         stream.read(bytes);
 

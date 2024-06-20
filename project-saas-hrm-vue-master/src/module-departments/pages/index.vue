@@ -108,33 +108,33 @@
  
 <!-- 引入组件 -->
 <script>
-// 引入api
-import {list, saveOrupdate, find, deleteById} from '@/api/base/dept'
+//引入api
+import {list,saveOrupdate,find,deleteById} from "@/api/base/dept"
 import commonApi from '@/utils/common'
 import deptAdd from './../components/add'
 export default {
-  components: {deptAdd},
+  components:{deptAdd},
   data() {
     return {
-      deptAdd: 'deptAdd',
+      deptAdd:'deptAdd',
       activeName: 'first', 
-      departData: {},
-      depts: []
+      departData:{},
+      depts:[]
     }
   },
   methods: {
-      // 添加部门
+      //添加部门
     handlAdd(parentId) {
-      // 父页面调用子组件中的内容
-      this.$refs.addDept.parentId = parentId
+      //父页面调用子组件中的内容
+      this.$refs.addDept.parentId = parentId;
       this.$refs.addDept.dialogFormVisible = true
     },
-    // 查看部门
+    //查看部门
     handUpdate(id) {
-      // 根据id查询部门
-      find({id: id}).then(res => {
-         // 数据绑定到dept对象中
-         this.$refs.addDept.dept = res.data.data
+      //根据id查询部门
+      find({id:id}).then(res => {
+         //数据绑定到dept对象中
+         this.$refs.addDept.dept = res.data.data;
          this.$refs.addDept.dialogFormVisible = true
       })
     },
@@ -145,59 +145,53 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-               deleteById({id: id}).then(res => {
+               deleteById({id:id}).then(res=> {
                 this.$message({
                   message: res.data.message,
-                  type: res.data.success ? 'success' : 'error'
-                })
-                if (res.data.success) {
-                  location.reload()
+                  type: res.data.success?'success':'error'
+                });
+                if(res.data.success) {
+                  location.reload();
                 }
               })
         })
     },
 
-    // 构造查询方法
+    //构造查询方法
     getList() {
       list().then(res => {
        this.departData = res.data.data
-       // 将普通的数据转化为父子接口
-       this.depts = commonApi.transformTozTreeFormat(res.data.data.depts)
+       //将普通的数据转化为父子接口
+       this.depts = commonApi.transformTozTreeFormat(res.data.data.depts);
       })
     }
   },
   created: function() {
-    this.getList()
-  }
+    this.getList();
+  },
 }
 </script>
 <style rel="stylesheet/scss" lang="scss">
 .el-dropdown {
   color: #000000
 }
-
 .el-tree-node__content>.el-tree-node__expand-icon {
-  padding: 0px;
+  padding:0px;
 }
-
 .el-tree-node__expand-icon {
-  color: #ffffff
+  color:#ffffff
 }
-
 .generalClassNode {
   padding-left: 20px;
 }
-
-.el-tree-node__content {
+.el-tree-node__content{
   font-size: 16px;
   line-height: 36px;
-  height: 36px;
+  height:36px;
 }
-
-.custom-tree-node {
+.custom-tree-node{
   padding-left: 20px;
 }
-
 .objectTree {
   overflow: auto;
   z-index: 100;
@@ -206,37 +200,32 @@ export default {
   margin-top: 5px;
   left: 70px;
 }
-
 .el-tabs__content {
   overflow: initial;
 }
-
 .boxpad {
   margin-left: -40px;
 }
 </style>
 <style  rel="stylesheet/scss" lang="scss" scoped>
-.el-tree-node__expand-icon {}
-
-.el-icon-caret-right {}
-
-.el-tree-node__content {
+.el-tree-node__expand-icon{
+ 
+}
+.el-icon-caret-right{}
+.el-tree-node__content{
   font-size: 14px;
   line-height: 36px;
 }
-
 .generalClass {
   font-size: 14px;
   line-height: 36px;
-  color: #000000
+  color:#000000
 }
-
 .all {
   position: relative;
   min-height: 100%;
   padding-bottom: 200px;
 }
-
 .organization-main:after,
 .organization-index-top:after {
   display: block;
@@ -245,7 +234,6 @@ export default {
   visibility: hidden;
   height: 0;
 }
-
 .organization-main {
   font-size: 14px;
   font-size: 14px;
@@ -255,7 +243,6 @@ export default {
   padding-bottom: 20px;
   margin-left: 20px;
 }
-
 .main-top-title {
   padding-left: 20px;
   padding-top: 20px;
@@ -269,23 +256,19 @@ export default {
   outline: 8px solid #fff;
   -webkit-border-radius: 4px;
 }
-
 ::-webkit-scrollbar-track-piece {
   background-color: #fff;
   -webkit-border-radius: 0;
 }
-
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background-color: #fb4446;
   height: 50px;
   -webkit-border-radius: 4px;
 }
-
 .modal-total {
   width: 100%;
   height: 100%;
@@ -296,7 +279,6 @@ export default {
   z-index: 90;
   opacity: 0.2;
 }
-
 .modal {
   width: 400px;
   height: 300px;
@@ -307,11 +289,9 @@ export default {
   top: 20%;
   text-align: center;
 }
-
 .treBox {
   padding: 30px 120px 0;
 }
-
 .organization-index-top {
   position: relative;
 
@@ -321,21 +301,17 @@ export default {
     right: 15px;
   }
 }
-
 .treeCon {
   border-bottom: 1px solid #cfcfcf;
   padding: 10px 0;
   margin-bottom: 10px;
-
   .el-dropdown {
     color: #333;
   }
 }
-
 .treeRinfo {
   display: inline-block;
 }
-
 .treeRinfo span {
   padding-left: 30px;
 }

@@ -48,7 +48,7 @@
 
 <script>
 import { add, jobnumber } from '@/api/base/users'
-import * as deptApi from '@/api/base/dept'
+import  * as deptApi  from '@/api/base/dept'
 import employeesData from '@/api/constant/employees'
 import commonApi from '@/utils/common'
 var _this = null
@@ -56,18 +56,18 @@ export default {
   name: 'add',
   data() {
     return {
-      formBase: {},
+      formBase:{},
       dialogFormVisible: false,
       isShowSelect: false,
       depts: [],
-      employeesData: employeesData.hireType
+      employeesData : employeesData.hireType,
     }
   },
   methods: {
     createData() {
       add(this.formBase).then(res => {
-        this.$message({message: res.data.message, type: res.data.success ? 'success' : 'error'})
-        if (res.data.success) {
+        this.$message({message:res.data.message,type:res.data.success?"success":"error"});
+        if(res.data.success) {
           this.dialogFormVisible = false
           this.$emit('doQuery', {})
         }
@@ -77,7 +77,7 @@ export default {
       this.formBase.departmentName = data.name
       this.formBase.departmentId = data.id
       this.isShowSelect = false
-    }
+    },
   },
   // 创建完毕状态
   created: function() {
@@ -99,15 +99,15 @@ export default {
   border: 1px solid #dddee1;
   padding: 4px 7px;
   border-radius: 5px;
-
+  
 }
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.objectTree {
+.objectTree{
   position: absolute;
-  width: 300px;
-  z-index: 999;
+  width:300px;
+  z-index:999;
   border: 1px solid #dddee1;
   left: 0;
   border-radius: 5px;

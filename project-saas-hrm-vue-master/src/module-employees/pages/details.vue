@@ -9,9 +9,11 @@
             </el-tab-pane>
             <el-tab-pane name="two" class="rInfo">
                 <span slot="label">个人详情</span>
+                <component v-bind:is="userInfo" :objId='objId' ref="user"></component>
             </el-tab-pane>
             <el-tab-pane name="third" class="rInfo">
                 <span slot="label">岗位信息</span>
+                <component v-bind:is="postInfo" :objId='objId'></component>
             </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -21,12 +23,16 @@
 
 <script>
 import accountInfo from './../components/details-account-info'
+import userInfo from './../components/details-user-info'
+import postInfo from './../components/details-post-info'
 export default {
   name: 'employeesDetails',
-  components: { accountInfo},
+  components: { accountInfo, userInfo, postInfo},
   data() {
     return {
-      accountInfo: 'accountInfo',
+      accountInfo:'accountInfo',
+      userInfo: 'userInfo',
+      postInfo: 'postInfo',  
       activeName: 'first',
       objId: this.$route.params.id,
       dataList: []
@@ -39,7 +45,6 @@ export default {
 .el-tabs__content {
   overflow: initial;
 }
-
 .logInfo {
   width: 250px;
   float: right;
@@ -54,27 +59,22 @@ export default {
     font-weight: normal;
   }
 }
-
 .logList {
   li {
     list-style: none;
     padding-left: 80px;
-
     .logRinfo {
       position: relative;
       padding: 25px 0 0;
       margin-left: 15px;
-
       .time {
         position: absolute;
         left: -100px;
         top: 25px;
       }
-
       .logContent {
         position: relative;
       }
-
       .logContent:before {
         content: '';
         width: 14px;
@@ -89,7 +89,6 @@ export default {
         background: #fff;
       }
     }
-
     .logRinfo:before {
       content: '';
       position: absolute;
@@ -103,4 +102,5 @@ export default {
 }
 </style>
 
-<style rel="stylesheet/scss" lang="scss" scoped></style>
+<style rel="stylesheet/scss" lang="scss" scoped>
+</style>

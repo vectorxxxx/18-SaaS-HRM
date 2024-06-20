@@ -23,14 +23,14 @@
 </template>
 
 <script>
-import {list, saveOrupdate, find, deleteById} from '@/api/base/dept'
+import {list,saveOrupdate,find,deleteById} from "@/api/base/dept"
 export default {
  data () {
      return {
-      // 添加部门的模型
-      parentId: '',
-      dialogFormVisible: false,
-      dept: {}
+      //添加部门的模型
+      parentId:'',
+      dialogFormVisible:false,
+      dept:{}
      }
  },
   methods: {
@@ -39,12 +39,12 @@ export default {
       saveOrupdate(this.dept).then(res => {
         this.$message({
           message: res.data.message,
-          type: res.data.success ? 'success' : 'error'
-        })
-        // 保存成功
-        if (res.data.success) {
-          // 如果成功
-          location.reload()
+          type: res.data.success?'success':'error'
+        });
+        //保存成功
+        if(res.data.success) {
+          //如果成功
+          location.reload();
         }
       })
     }
@@ -52,4 +52,6 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+
+</style>

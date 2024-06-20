@@ -2,7 +2,6 @@
   <div class="dashboard-container">
     <div class="app-container">
       <el-card shadow="never">
-        <!-- 数据 -->
         <el-table :data="dataList"  fit highlight-current-row style="width: 100%" border>
           <el-table-column align="center" :label="$t('table.operationType')">
             <template slot-scope="scope">
@@ -30,7 +29,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- end -->
+         demo页面
       </el-card>
      </div>
   </div>
@@ -56,6 +55,7 @@ export default {
   },
   // 创建完毕状态
   created() {
+    //console.log("created方法执行")
     this.getList()
   },
 }

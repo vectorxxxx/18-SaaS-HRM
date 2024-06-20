@@ -12,27 +12,9 @@
                        <el-input v-model="formData.username" placeholder="请输入" class="inputW"></el-input>
                      </el-form-item>
                      <el-form-item label="密码：">
-                       <el-input v-model="formData.password" placeholder="请输入" class="inputW"></el-input>
+                       <el-input v-model="formData.password" type="password" placeholder="请输入" class="inputW"></el-input>
                     </el-form-item>
-                    <el-form-item label="部门：">
-                        <el-input
-                          placeholder="请选择"
-                          v-model="formData.departmentName"
-                          icon="caret-bottom"
-                          class="inputW"
-                          @click.native="isShowSelect = !isShowSelect">
-                        </el-input>
-                        <input v-model="formData.departmentId" type="hidden" >
-                        <el-tree v-if="isShowSelect"
-                          :expand-on-click-node="false"
-                          :data="inspectionObjectOptions"
-                          :props="{label:'name'}"
-                          default-expand-all
-                           @node-click="handleNodeClick"
-                          class="objectTree"
-                          ref="tree2">
-                        </el-tree>
-                    </el-form-item>
+                  
                       <el-form-item>
                         <el-button type="primary" @click="saveData">更新</el-button>
                         <router-link :to="{'path':'/employees/index'}" class="el-button el-button--text el-button--small">
@@ -50,8 +32,8 @@
 
 <script>
 import constantApi from '@/api/constant/employees'
-import {detail, update} from '@/api/base/users'
-import * as deptApi from '@/api/base/dept'
+import {detail,update} from "@/api/base/users"
+import  * as deptApi  from '@/api/base/dept'
 import commonApi from '@/utils/common'
 export default {
   name: 'accountInfo',
@@ -60,9 +42,9 @@ export default {
     return {
       baseData: constantApi,
       inspectionObjectOptions: [],
-      isShowSelect: false,
+      isShowSelect:false,
       formData: {
-        id: this.objId
+        id: this.objId,
       }
     }
   },
@@ -85,7 +67,7 @@ export default {
           this.$message.success('保存成功！')
           this.getObjInfo()
       })
-    }
+    },
   },
   // 创建完毕状态
   created: function() {
@@ -104,7 +86,6 @@ export default {
 
 .el-collapse-item {
   position: relative;
-
   // width: 80%;
   // .el-collapse-item__header{width: 80%;}
   .infoR {
@@ -119,18 +100,15 @@ export default {
     top: 0px;
   }
 }
-
 // .el-input--medium {
 //   width: 80%;
 // }
 .linkage {
   display: inline-block;
 }
-
 .textBotm {
   vertical-align: text-bottom;
 }
-
 .navInfo {
   height: auto;
   font-size: 30px;
@@ -139,7 +117,6 @@ export default {
   text-align: center;
   border-bottom: 1px solid #333;
 }
-
 .step {
   position: fixed;
   left: 220px;
@@ -150,4 +127,5 @@ export default {
 }
 </style>
 
-<style rel="stylesheet/scss" lang="scss" scoped></style>
+<style rel="stylesheet/scss" lang="scss" scoped>
+</style>

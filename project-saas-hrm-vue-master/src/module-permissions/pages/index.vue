@@ -42,8 +42,7 @@
                 active-value="1"
                 inactive-value="0"
                 active-text="可见"
-                inactive-text="不可见"
-                >
+                inactive-text="不可见">
               </el-switch>
             </el-form-item>  
             <div v-if="type==1">
@@ -102,94 +101,92 @@
 </template>
 
 <script>
-import {saveOrUpdate, list, detail, remove} from '@/api/base/permissions'
+import {saveOrUpdate,list,detail,remove} from "@/api/base/permissions"
 export default {
   name: 'permissions-table-index',
   data() {
     return {
       MenuList: 'menuList',
-      type: 0,
-      pid: '',
-      dialogFormVisible: false,
-      apiDialogVisible: false,
-      formData: {},
-      dataList: [],
-      apiList: [],
-      pointEnable: {}
+      type:0,
+      pid:"",
+      dialogFormVisible:false,
+      apiDialogVisible:false,
+      formData:{},
+      dataList:[],
+      apiList:[],
+      pointEnable:{}
     }
   },
   methods: {
-    setPid(type, pid) {
-      this.pid = pid
+    setPid(type,pid){
+      this.pid = pid;
       this.type = type
     },
     handleCreate(id) {
-      if (id && id != undefined) {
+      if(id && id !=undefined) {
         detail({id}).then(res => {
           this.formData = res.data.data
-          this.dialogFormVisible = true
+          this.dialogFormVisible=true
         })
-      } else {
+      }else{
         this.formData = {}
-        this.dialogFormVisible = true
+        this.dialogFormVisible=true
       }
     },
     saveOrUpdate() {
       this.formData.type = this.type
       this.formData.pid = this.pid
-      this.formData.enVisible = parseInt(this.formData.enVisible)
       saveOrUpdate(this.formData).then(res => {
-        this.$message({message: res.data.message, type: res.data.success ? 'success' : 'error'})
-        if (res.data.success) {
-          this.formData = {}
-          this.dialogFormVisible = false
+        this.$message({message:res.data.message,type:res.data.success?"success":"error"});
+        if(res.data.success){
+          this.formData={};
+          this.dialogFormVisible=false;
         }
-        if (this.type == 3) {
-          this.handlerApiList(this.pid)
-        } else {
-          this.getList()
+        if(this.type ==3){
+          this.handlerApiList(this.pid);
+        }else{
+          this.getList();
           this.pointEnable = {}
         }
       })
     },
     handleDelete(id) {
-      remove({id}).then(res => {
-        this.$message({message: res.data.message, type: res.data.success ? 'success' : 'error'})
-        this.getList()
+      remove({id}).then(res=> {
+        this.$message({message:res.data.message,type:res.data.success?"success":"error"});
       })
     },
     getList() {
-      list({type: 1, pid: 0}).then(res => {
+      list({type:1,pid:0}).then(res=> {
           this.dataList = res.data.data
       })
     },
-    show(index, id) {
-        if (!this.pointEnable[id] == null || this.pointEnable[id] == undefined) {
-            list({type: 2, pid: id}).then(res => {
-                if (res.data.data.length <= 0) {
-                  this.$message.error('无子权限')
-                } else {
-                  for (var i = 0; i < res.data.data.length; i++) {
-                      this.dataList.splice(index + 1, 0, res.data.data[i])
+    show(index,id) {
+        if(!this.pointEnable[id] == null || this.pointEnable[id]==undefined){
+            list({type:2,pid:id}).then(res=> {
+                if(res.data.data.length <=0) {
+                  this.$message.error("无子权限")
+                }else{
+                  for(var i = 0 ; i <res.data.data.length;i++) {
+                      this.dataList.splice(index+1,0,res.data.data[i]);
                   }
-                  this.pointEnable[id] = res.data.data.length
+                  this.pointEnable[id] = res.data.data.length;
                 }
             })
-        } else {
-            this.dataList.splice(index + 1, this.pointEnable[id])
-            this.pointEnable[id] = null
+        }else{
+            this.dataList.splice(index+1,this.pointEnable[id])
+            this.pointEnable[id] = null;
         }
     },
     handlerApiList(id) {
-      this.pid = id
-      list({type: 3, pid: id}).then(res => {
+      this.pid = id;
+      list({type:3,pid:id}).then(res=> {
           this.apiList = res.data.data
-          this.apiDialogVisible = true
+          this.apiDialogVisible = true;
       })
     }
   },
   created () {
-    this.getList()
+    this.getList();
   }
 }
 </script>
@@ -197,7 +194,6 @@ export default {
 .alert {
   margin: 10px 0px;
 }
-
 .pagination {
   margin-top: 10px;
   // text-align: right;
@@ -208,12 +204,8 @@ export default {
 .el-table th {
   background-color: #fafafa;
 }
-
 .el-table th.is-leaf {
   border-bottom: 2px solid #e8e8e8;
 }
-
-.el-table__row i {
-  font-style: normal
-}
+.el-table__row i{ font-style:normal}
 </style>

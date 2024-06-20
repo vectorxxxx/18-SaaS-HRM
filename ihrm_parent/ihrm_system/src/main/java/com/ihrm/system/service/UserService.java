@@ -1,5 +1,6 @@
 package com.ihrm.system.service;
 
+import com.baidu.aip.util.Base64Util;
 import com.ihrm.common.service.BaseService;
 import com.ihrm.common.utils.IdWorker;
 import com.ihrm.common.utils.QiniuUploadUtil;
@@ -9,6 +10,7 @@ import com.ihrm.domain.system.User;
 import com.ihrm.system.client.DepartmentFeignClient;
 import com.ihrm.system.dao.RoleDao;
 import com.ihrm.system.dao.UserDao;
+import com.ihrm.system.utils.BaiduAiUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +25,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class UserService extends BaseService<User>
@@ -247,6 +253,9 @@ public class UserService extends BaseService<User>
         userDao.saveAll(users);
     }
 
+    @Autowired
+    private BaiduAiUtil baiduAiUtil;
+
     /**
      * 上传图片
      *
@@ -256,15 +265,18 @@ public class UserService extends BaseService<User>
      */
     public String uploadImage(String id, MultipartFile file) throws Exception {
         final User user = userDao.getOne(id);
-        final String key = new QiniuUploadUtil().upload(file.getOriginalFilename(), file.getBytes());
-        if (key != null) {
-            user.setStaffPhoto(key);
+        final String imgUrl = new QiniuUploadUtil().upload(file.getOriginalFilename(), file.getBytes());
+        user.setStaffPhoto(imgUrl);
+        userDao.save(user);
+
+        final Boolean aBoolean = baiduAiUtil.faceExist(id);
+        final String encode = Base64Util.encode(file.getBytes());
+        if (aBoolean) {
+            baiduAiUtil.faceUpdate(id, encode);
         }
         else {
-            final String str = new String(Base64Utils.encode(file.getBytes()));
-            user.setStaffPhoto("data:image/jpg;base64,".concat(str));
+            baiduAiUtil.faceRegister(id, encode);
         }
-        userDao.save(user);
-        return key;
+        return imgUrl;
     }
 }

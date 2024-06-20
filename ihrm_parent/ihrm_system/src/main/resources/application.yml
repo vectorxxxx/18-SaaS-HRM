@@ -30,7 +30,20 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: 123456
+  #servlet
+  servlet:
+    multipart:
+      max-file-size: 2MB     # 设置单个文件最大大小为2MB
+      max-request-size: 2MB  # 设置多个文件大小为2MB
 jwt:
   config:
     key: saas-ihrm
     ttl: 3600000
+ai:
+  appId: 84770411
+  apiKey: qc8ZRud4ifEkQkKK3sOGv5sY
+  secretKey: h2JGtFkzwpJ3CvWvPv5HJfzcrAAbqhW7
+  imageType: BASE64
+  groupId: itcast
+qr:
+  url: http://localhost:8080/#/facelogin

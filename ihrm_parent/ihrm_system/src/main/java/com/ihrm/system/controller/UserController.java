@@ -18,7 +18,13 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +56,7 @@ public class UserController extends BaseController
     public Result upload(
             @PathVariable(name = "id")
                     String id,
-            @RequestParam("file")
+            @RequestParam(name = "file")
                     MultipartFile file) throws Exception {
         String imageUrl = userService.uploadImage(id, file);
         return new Result(ResultCode.SUCCESS, imageUrl);

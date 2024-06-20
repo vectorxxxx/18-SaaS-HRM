@@ -23,9 +23,10 @@ public class ShiroConfiguration
 
     @Value("${spring.redis.host}")
     private String host;
-
     @Value("${spring.redis.port}")
     private int port;
+    @Value("${spring.redis.password}")
+    private String password;
 
     //配置自定义的Realm
     @Bean
@@ -92,6 +93,7 @@ public class ShiroConfiguration
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
         redisManager.setPort(port);
+        redisManager.setPassword(password);
         return redisManager;
     }
 

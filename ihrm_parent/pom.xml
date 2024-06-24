@@ -15,6 +15,7 @@
         <module>shiro_demo</module>
         <module>ihrm_employee</module>
         <module>ihrm_eureka</module>
+        <module>ihrm_gate</module>
     </modules>
 
     <packaging>pom</packaging>

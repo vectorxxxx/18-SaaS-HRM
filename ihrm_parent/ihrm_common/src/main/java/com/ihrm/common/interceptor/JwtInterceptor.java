@@ -5,7 +5,6 @@ import com.ihrm.common.exception.CommonException;
 import com.ihrm.common.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
@@ -31,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * 2.判断用户是否具有当前访问接口的权限
  * }</pre>
  */
-@Component
+//@Component
 public class JwtInterceptor extends HandlerInterceptorAdapter
 {
 

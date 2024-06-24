@@ -248,44 +248,40 @@ public class DatabaseUtil extends JFrame
         jButton1.setText("连接中...");
         jButton1.setEnabled(false);
 
-        final Thread t = new Thread(new Runnable()
-        {
-            @Override
-            public void run() {
-                try {
-                    String ip = jTextField3.getText();
-                    String username = jTextField1.getText();
-                    String password = jTextField2.getText();
-                    String dbType = (String) jComboBox1.getSelectedItem();
-                    DataBase db = new DataBase(dbType, ip, "3306", "");
-                    db.setUserName(username);
-                    db.setPassWord(password);
-                    List<String> catalogs = DataBaseUtils.getSchemas(db);
-                    jComboBox2.removeAllItems();
-                    for (String c : catalogs) {
-                        jComboBox2.addItem(c);
-                    }
+        final Thread t = new Thread(() -> {
+            try {
+                String ip = jTextField3.getText();
+                String username = jTextField1.getText();
+                String password = jTextField2.getText();
+                String dbType = (String) jComboBox1.getSelectedItem();
+                DataBase db = new DataBase(dbType, ip, "3306", "");
+                db.setUserName(username);
+                db.setPassWord(password);
+                List<String> catalogs = DataBaseUtils.getSchemas(db);
+                jComboBox2.removeAllItems();
+                for (String c : catalogs) {
+                    jComboBox2.addItem(c);
+                }
 
-                    JOptionPane.showMessageDialog(null, "连接成功", "提示", JOptionPane.DEFAULT_OPTION);
-                    jButton2.setText("下一步");
+                JOptionPane.showMessageDialog(null, "连接成功", "提示", JOptionPane.DEFAULT_OPTION);
+                jButton2.setText("下一步");
 
-                }
-                catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "无法加载驱动类", "提示", JOptionPane.OK_OPTION);
-
-                }
-                catch (SQLException e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "无法连接数据库，请核对连接信息是否正确", "提示", JOptionPane.OK_OPTION);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "发生错误", "错误详情请查看error.log", JOptionPane.INFORMATION_MESSAGE);
-                }
-                jButton1.setEnabled(true);
-                jButton1.setText("测试连接");
             }
+            catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "无法加载驱动类: " + e.getMessage(), "提示", JOptionPane.OK_OPTION);
+
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "无法连接数据库，请核对连接信息是否正确: " + e.getMessage(), "提示", JOptionPane.OK_OPTION);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "发生错误", "错误详情请查看error.log" + e.getMessage(), JOptionPane.INFORMATION_MESSAGE);
+            }
+            jButton1.setEnabled(true);
+            jButton1.setText("测试连接");
         });
         t.start();
     }
@@ -294,13 +290,7 @@ public class DatabaseUtil extends JFrame
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            @Override
-            public void run() {
-                new DatabaseUtil().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new DatabaseUtil().setVisible(true));
     }
 
     //GEN-BEGIN:variables

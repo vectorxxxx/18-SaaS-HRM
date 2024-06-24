@@ -7,6 +7,7 @@
 
 package cn.itcast.generate.ui;
 
+import cn.itcast.generate.core.GeneratorFacade;
 import cn.itcast.generate.entity.DataBase;
 import cn.itcast.generate.entity.Settings;
 
@@ -86,14 +87,17 @@ public class CodeUtil extends JFrame
         setTitle("代码生成器v1.0");
         addWindowListener(new java.awt.event.WindowAdapter()
         {
+            @Override
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
 
+            @Override
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
 
+            @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -116,6 +120,7 @@ public class CodeUtil extends JFrame
         jButton1.setText("\u751f\u6210\u4ee3\u7801");
         jButton1.addActionListener(new java.awt.event.ActionListener()
         {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
@@ -124,6 +129,7 @@ public class CodeUtil extends JFrame
         jButton2.setText("\u5173\u95ed");
         jButton2.addActionListener(new java.awt.event.ActionListener()
         {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
@@ -139,6 +145,7 @@ public class CodeUtil extends JFrame
         jButton7.setText("\u9009\u62e9");
         jButton7.addActionListener(new java.awt.event.ActionListener()
         {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
@@ -335,10 +342,11 @@ public class CodeUtil extends JFrame
         jButton1.setText("代码生成中...");
         final Thread t = new Thread(new Runnable()
         {
+            @Override
             public void run() {
                 try {
                     //路径map封装
-                    Map<String, String> pathMap = new HashMap<String, String>();
+                    Map<String, String> pathMap = new HashMap<>();
                     //获取当前文件夹下的模板目录下的所有文件夹
                     String basePath = new File("").getAbsolutePath() + "\\模板\\" + jComboBox1.getSelectedItem();//设定为当前文件夹
 
@@ -400,6 +408,7 @@ public class CodeUtil extends JFrame
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable()
         {
+            @Override
             public void run() {
                 DataBase db = new DataBase("mysql", "ihrm");
                 db.setUserName("root");
@@ -442,18 +451,23 @@ public class CodeUtil extends JFrame
     //UI调用程序入口
 
     /**
-     * @param templetPath 模板所在路径
-     * @param outpath     选择代码生成路径
-     * @param settings    工程配置对象
-     * @param db          数据库信息
+     * @param templatePath 模板所在路径
+     * @param outPath      选择代码生成路径
+     * @param settings     工程配置对象
+     * @param db           数据库信息
      */
-    private void generator(String templetPath, String outpath, Settings settings, DataBase db) {
-        System.out.println(templetPath);
-        System.out.println(outpath);
+    private void generator(String templatePath, String outPath, Settings settings, DataBase db) throws Exception {
+        System.out.println(templatePath);
+        System.out.println(outPath);
         System.out.println(settings);
         System.out.println(db);
-        //		GeneratorFacade gf = new GeneratorFacade(templetPath,outpath,settings);
-        //		gf.generatorByTable(db);
+        GeneratorFacade facade = new GeneratorFacade(templatePath, outPath, settings, db);
+        try {
+            facade.generatorByDataBase();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

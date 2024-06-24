@@ -29,13 +29,12 @@ public class DataBaseUtils
 
     //获取数据库列表
     public static List<String> getSchemas(DataBase db) throws Exception {
-        List<String> list;
+        List<String> list = new ArrayList<>();
         try (Connection connection = getConnection(db)) {
             //1.获取元数据
             DatabaseMetaData metaData = connection.getMetaData();
             //2.获取所有数据库列表
             try (ResultSet rs = metaData.getCatalogs()) {
-                list = new ArrayList<>();
                 while (rs.next()) {
                     list.add(rs.getString(1));
                 }
@@ -133,7 +132,7 @@ public class DataBaseUtils
     public static void main(String[] args) throws Exception {
         DataBase db = new DataBase("MYSQL", "ihrm");
         db.setUserName("root");
-        db.setPassWord("111111");
+        db.setPassWord("root");
 
         List<Table> dbInfo = DataBaseUtils.getDbInfo(db);
         for (Table table : dbInfo) {
